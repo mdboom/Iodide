@@ -68,8 +68,10 @@ module.exports = (env) => {
           },
         },
         {
-          test: /\.jsx?/,
-          include: APP_DIR,
+          test: /\.jsx?$/,
+          include: [APP_DIR,
+                    path.resolve(__dirname, "node_modules/devtools-reps/"),
+                    path.resolve(__dirname, "node_modules/devtools-components")],
           loader: 'babel-loader',
         },
         {

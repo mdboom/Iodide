@@ -1,9 +1,9 @@
 {
-  "presets" : ['es2016', "react"],
+  "presets" : ["es2016", "react", "flow"],
   "plugins" : ["transform-class-properties"],
   "env": {
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "plugins": ["transform-es2015-modules-commonjs", "transform-flow-strip-types"]
     }
   }
 }
