@@ -1,3 +1,4 @@
+require('dotenv').config()
 const webpack = require('webpack')
 const path = require('path')
 const CreateFileWebpack = require('create-file-webpack')
@@ -5,6 +6,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const _ = require('lodash')
 const argv = require('minimist')(process.argv.slice(2))
+
+// console.log(process.env)
 
 const reduxLogMode = argv._.includes('reduxVerbose') ? 'VERBOSE' : 'SILENT'
 
@@ -18,8 +21,9 @@ const DEV_SERVER_PORT = 8000
 let BUILD_DIR
 let APP_PATH_STRING
 let CSS_PATH_STRING
-let EVAL_FRAME_ORIGIN
-let EDITOR_ORIGIN
+
+let { EVAL_FRAME_ORIGIN } = process.env
+let { EDITOR_ORIGIN } = process.env
 
 // note that we'll always use APP_VERSION_STRING = 'dev'
 // unless we're dealing with a tag
@@ -44,26 +48,26 @@ module.exports = (env) => {
         branch = gitRev.branch()
       }
       if (branch === 'master') {
-        EDITOR_ORIGIN = 'https://extremely-alpha.iodide.io'
-        EVAL_FRAME_ORIGIN = 'https://extremely-alpha.iodide.app'
+        // EDITOR_ORIGIN = 'https://extremely-alpha.iodide.io'
+        // EVAL_FRAME_ORIGIN = 'https://extremely-alpha.iodide.app'
       } else if (branch === 'stable') {
         // only uglify tags and stable
         plugins.push(new UglifyJSPlugin())
-        EDITOR_ORIGIN = 'https://iodide.io/stable'
-        EVAL_FRAME_ORIGIN = 'https://iodide.app/stable'
+        // EDITOR_ORIGIN = 'https://iodide.io/stable'
+        // EVAL_FRAME_ORIGIN = 'https://iodide.app/stable'
       }
     } else {
       // only uglify tags and stable
       plugins.push(new UglifyJSPlugin())
       APP_VERSION_STRING = gitRev.tag()
-      EDITOR_ORIGIN = 'https://iodide.io/dist'
-      EVAL_FRAME_ORIGIN = 'https://iodide.app'
+      // EDITOR_ORIGIN = 'https://iodide.io/dist'
+      // EVAL_FRAME_ORIGIN = 'https://iodide.app'
     }
     APP_PATH_STRING = `${EDITOR_ORIGIN}/`
     CSS_PATH_STRING = `${EDITOR_ORIGIN}/`
   } else if (env === 'dev-client-only') {
     BUILD_DIR = path.resolve(__dirname, 'dev/')
-    EDITOR_ORIGIN = `http://localhost:${DEV_SERVER_PORT}`
+    // EDITOR_ORIGIN = `http://localhost:${DEV_SERVER_PORT}`
     EVAL_FRAME_ORIGIN = EDITOR_ORIGIN
     APP_PATH_STRING = `${EDITOR_ORIGIN}/`
     CSS_PATH_STRING = `${EDITOR_ORIGIN}/`
